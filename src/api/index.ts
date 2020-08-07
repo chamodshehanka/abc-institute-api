@@ -7,6 +7,6 @@ router.get("/", (_req, res) => {
   res.send("Response from Bodimak API");
 });
 
-router.use("working-days", workingDays);
+router.use("/working-days", workingDays);
 
 export default router;
