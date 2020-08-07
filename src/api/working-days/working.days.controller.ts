@@ -33,6 +33,82 @@ export default class UserController {
       });
   };
 
+  public updateWorkingDays = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const {
+      _id,
+      name,
+      workingHours,
+      selectedDays,
+      prefferedTimeSlots,
+    } = req.body;
+    const collection: any = getCollection();
+
+    collection
+      .findOneAndUpdate(
+        {
+          _id: new mongodb.ObjectId(_id),
+        },
+        {
+          $set: {
+            name: name,
+            workingHours: workingHours,
+            selectedDays: selectedDays,
+            prefferedTimeSlots: prefferedTimeSlots,
+          },
+        }
+      )
+      .then(() => {
+        res.send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_UPDATED));
+      })
+      .catch((err: any) => {
+        console.error(ErrorCodes.USER_UPDATE_FAILED, err);
+        res.send(responses.failed(ErrorCodes.DATA_UPDATE_FAILED));
+      });
+  };
+
+  public deleteWorkingDays = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const id = req.params.id;
+    const collection: any = getCollection();
+
+    collection
+      .deleteOne({ _id: new mongodb.ObjectId(id) })
+      .then(() => {
+        res.send(responses.success(SuccessCodes.SUCCESSFULLY_USER_DELETED));
+      })
+      .catch((err: any) => {
+        console.error(err);
+        res.send(responses.failed(ErrorCodes.INTERNAL_ERROR));
+      });
+  };
+
+  public getWorkingDaysById = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const collection: any = getCollection();
+
+    collection
+      .findOne({ _id: req.params.id })
+      .then((data: any) => {
+        res.send(
+          responses.successWithPayload(
+            SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
+            data
+          )
+        );
+      })
+      .catch((err: any) => {
+        console.error(err);
+        res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+      });
+  };
+
   public getWorkingDaysList = async (
     req: Request,
     res: Response
