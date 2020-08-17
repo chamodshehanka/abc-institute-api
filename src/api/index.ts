@@ -6,6 +6,7 @@ import lecturers from "./lecturers/lecturer.route";
 import yearSemester from "./academic-year-semester/year.route";
 import programme from "./programme/programme.route";
 import tags from "./tags/tags.route";
+import group from "./group/group.route";
 
 const router: Router = Router();
 
@@ -20,5 +21,6 @@ router.use("/lecturers", lecturers);
 router.use("/yearSemester", yearSemester);
 router.use("/programme", programme);
 router.use("/tags", tags);
+router.use("/group", group);
 
 export default router;
