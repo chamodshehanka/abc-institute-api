@@ -1,13 +1,13 @@
 import { Router } from "express";
 import Controller from "./lecturer.controller";
 
-const lecturer: Router = Router();
+const lecturers: Router = Router();
 const controller = new Controller();
 
-lecturer.post("/add", controller.addLecturer);
-lecturer.put("/update", controller.updateLecturer);
-lecturer.delete("/delete/:id", controller.deleteLecturer);
-lecturer.get("/get/:id", controller.getLecturerById);
-lecturer.get("/list", controller.getLecturersList);
+lecturers.post("/add", controller.addLecturer);
+lecturers.put("/update", controller.updateLecturer);
+lecturers.delete("/delete/:id", controller.deleteLecturer);
+lecturers.get("/get/:id", controller.getLecturerById);
+lecturers.get("/list", controller.getLecturersList);
 
-export default lecturer;
+export default lecturers;
