@@ -5,6 +5,8 @@ import subjects from "./subjects/subject.route";
 import lecturers from "./lecturers/lecturer.route";
 import yearSemester from "./academic-year-semester/year.route";
 import programme from "./programme/programme.route";
+import tags from "./tags/tags.route";
+
 const router: Router = Router();
 
 router.get("/", (_req, res) => {
@@ -17,5 +19,6 @@ router.use("/subjects", subjects);
 router.use("/lecturers", lecturers);
 router.use("/yearSemester", yearSemester);
 router.use("/programme", programme);
+router.use("/tags", tags);
 
 export default router;
