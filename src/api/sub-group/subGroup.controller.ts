@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Group from "./group.class";
+import SubGroup from "./subGroup.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("group");
+  return MongoHelper.client.db("Cluster0").collection("subGroup");
 };
 
-export default class GroupController {
-  public addGroup = async (req: Request, res: Response): Promise<any> => {
+export default class SubGroupController {
+  public addSubGroup = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const group = new Group(requestData);
+    const subGroup = new SubGroup(requestData);
 
     collection
-      .insertOne(group)
+      .insertOne(subGroup)
       .then(() => {
         res
           .status(200)
@@ -31,7 +31,7 @@ export default class GroupController {
       });
   };
 
-  public updateGroup = async (req: Request, res: Response): Promise<any> => {
+  public updateSubGroup = async (req: Request, res: Response): Promise<any> => {
     const { _id, number } = req.body;
     const collection: any = getCollection();
 
@@ -55,7 +55,7 @@ export default class GroupController {
       });
   };
 
-  public deleteGroup = async (req: Request, res: Response): Promise<any> => {
+  public deleteSubGroup = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -70,7 +70,10 @@ export default class GroupController {
       });
   };
 
-  public getGroupById = async (req: Request, res: Response): Promise<any> => {
+  public getSubGroupById = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -89,7 +92,10 @@ export default class GroupController {
       });
   };
 
-  public getGroupList = async (req: Request, res: Response): Promise<any> => {
+  public getSubGroupList = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const collection: any = getCollection();
 
     try {
