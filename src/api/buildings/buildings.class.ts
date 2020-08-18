@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import { IBuilding } from "./building.interface";
+import { IBuilding } from "./buildings.interface";
 
 export const BuildingSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true },
@@ -7,5 +7,5 @@ export const BuildingSchema = new mongoose.Schema({
 
 });
 
-const Building = mongoose.model<ILecturer>("Building", BuildingSchema);
+const Building = mongoose.model<IBuilding>("Building", BuildingSchema);
 export default Building;
