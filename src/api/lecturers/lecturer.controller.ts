@@ -91,10 +91,11 @@ export default class LecturerController {
     req: Request,
     res: Response
   ): Promise<any> => {
+    const id = req.params.id;
     const collection: any = getCollection();
 
     collection
-      .findOne({ _id: req.params.id })
+      .findOne({ _id: new mongodb.ObjectId(id) })
       .then((data: any) => {
         res.send(
           responses.successWithPayload(
@@ -138,7 +139,7 @@ export default class LecturerController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items
               )
             );
         }
