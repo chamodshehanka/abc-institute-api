@@ -4,21 +4,24 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Subject from "./subject.class";
+import yearSemester from "./year.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("subjects");
+  return MongoHelper.client.db("Cluster0").collection("yearSemester");
 };
 
-export default class SubjectController {
-  public addSubject = async (req: Request, res: Response): Promise<any> => {
+export default class YearController {
+  public addYearSemester = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const subject = new Subject(requestData);
+    const yearsemester = new yearSemester(requestData);
 
     collection
-      .insertOne(subject)
+      .insertOne(yearsemester)
       .then(() => {
         res
           .status(200)
@@ -31,18 +34,11 @@ export default class SubjectController {
       });
   };
 
-  public updateSubject = async (req: Request, res: Response): Promise<any> => {
-    const {
-      _id,
-      subjectCode,
-      subjectName,
-      offeredYear,
-      offeredSemester,
-      lectureHours,
-      tutorialHours,
-      labHours,
-      evaluationHours,
-    } = req.body;
+  public updateYearSemester = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const { _id, year, semester } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -52,14 +48,8 @@ export default class SubjectController {
         },
         {
           $set: {
-            subjectCode: subjectCode,
-            subjectName: subjectName,
-            offeredYear: offeredYear,
-            offeredSemester: offeredSemester,
-            lectureHours: lectureHours,
-            tutorialHours: tutorialHours,
-            labHours: labHours,
-            evaluationHours: evaluationHours,
+            year: year,
+            semester: semester,
           },
         }
       )
@@ -72,7 +62,10 @@ export default class SubjectController {
       });
   };
 
-  public deleteSubject = async (req: Request, res: Response): Promise<any> => {
+  public deleteYearSemester = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,7 +80,10 @@ export default class SubjectController {
       });
   };
 
-  public getSubjectById = async (req: Request, res: Response): Promise<any> => {
+  public getYearSemesterById = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -106,7 +102,7 @@ export default class SubjectController {
       });
   };
 
-  public getSubjectsList = async (
+  public getYearSemesterList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -121,6 +117,15 @@ export default class SubjectController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
+          // items = items.map(
+          //   (item: { _id: any; name: any; email: any; phone: any }) => {
+          //     return {
+          //       id: item._id,
+          //       name: item.name,
+          //     };
+          //   }
+          // );
+
           res
             .status(200)
             .send(
