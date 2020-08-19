@@ -118,7 +118,7 @@ export default class TimetableController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items
               )
             );
         }

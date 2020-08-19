@@ -138,7 +138,7 @@ export default class WorkingDaysController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items
               )
             );
         }
