@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Locations from "./locations.class";
+import Rooms from "./rooms.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("locations");
+  return MongoHelper.client.db("Cluster0").collection("rooms");
 };
 
-export default class LocationsController {
-  public addLocation = async (req: Request, res: Response): Promise<any> => {
+export default class RoomsController {
+  public addRoom = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const location = new Locations(requestData);
+    const room = new Rooms(requestData);
 
     collection
-      .insertOne(location)
+      .insertOne(room)
       .then(() => {
         res
           .status(200)
@@ -31,10 +31,10 @@ export default class LocationsController {
       });
   };
 
-  public updateLocation = async (req: Request, res: Response): Promise<any> => {
+  public updateRoom = async (req: Request, res: Response): Promise<any> => {
     const {
       _id,
-      building,
+      buildingName,
       rooms
     } = req.body;
     const collection: any = getCollection();
@@ -46,8 +46,7 @@ export default class LocationsController {
         },
         {
           $set: {
-            name: name,
-            building: building,
+            buildingName: buildingName,
             rooms: rooms,
           },
         }
@@ -61,7 +60,7 @@ export default class LocationsController {
       });
   };
 
-  public deleteLocation = async (req: Request, res: Response): Promise<any> => {
+  public deleteRoom = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -76,7 +75,7 @@ export default class LocationsController {
       });
   };
 
-  public getLocationById = async (
+  public getRoomById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -98,7 +97,7 @@ export default class LocationsController {
       });
   };
 
-  public getLocationsList = async (
+  public getRoomsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
