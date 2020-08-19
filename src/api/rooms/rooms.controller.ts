@@ -126,7 +126,7 @@ export default class RoomsController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items 
               )
             );
         }
