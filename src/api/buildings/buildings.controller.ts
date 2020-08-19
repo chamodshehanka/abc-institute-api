@@ -121,7 +121,7 @@ export default class BuildingController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items 
               )
             );
         }
