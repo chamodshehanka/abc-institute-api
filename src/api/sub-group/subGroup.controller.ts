@@ -121,7 +121,7 @@ export default class SubGroupController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items
               )
             );
         }
