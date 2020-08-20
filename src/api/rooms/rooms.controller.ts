@@ -34,8 +34,9 @@ export default class RoomsController {
   public updateRoom = async (req: Request, res: Response): Promise<any> => {
     const {
       _id,
-      buildingName,
-      rooms
+      name,
+      building,
+      roomType,
     } = req.body;
     const collection: any = getCollection();
 
@@ -46,8 +47,9 @@ export default class RoomsController {
         },
         {
           $set: {
-            buildingName: buildingName,
-            rooms: rooms,
+            name: name,
+            roomType: roomType,
+            building:building,
           },
         }
       )

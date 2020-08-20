@@ -42,7 +42,7 @@ export default class BuildingController {
         },
         {
           $set: {
-            buildingName: buildingName,
+            name: name,
           },
         }
       )
@@ -121,7 +121,7 @@ export default class BuildingController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                items 
+                items
               )
             );
         }
