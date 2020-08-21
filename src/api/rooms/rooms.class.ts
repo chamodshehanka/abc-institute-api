@@ -3,8 +3,10 @@ import { IRooms } from "./rooms.interface";
 
 export const RoomsSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true },
-  buildingName: { type: String, required: true },
-  rooms: { type: String, required: true },
+  name: { type: String, required: true },
+  roomType: { type: String, required: true },
+  building: { type: String, required: true },
+  
   
 });
 
