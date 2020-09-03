@@ -42,7 +42,7 @@ export default class BuildingController {
         },
         {
           $set: {
-            buildingName: buildingName,
+            name: name,
           },
         }
       )
