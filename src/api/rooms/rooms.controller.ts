@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Lecturer from "./lecturer.class";
+import Rooms from "./rooms.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("lecturers");
+  return MongoHelper.client.db("Cluster0").collection("rooms");
 };
 
-export default class LecturerController {
-  public addLecturer = async (req: Request, res: Response): Promise<any> => {
+export default class RoomsController {
+  public addRoom = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const lecturer = new Lecturer(requestData);
+    const room = new Rooms(requestData);
 
     collection
-      .insertOne(lecturer)
+      .insertOne(room)
       .then(() => {
         res
           .status(200)
@@ -31,17 +31,12 @@ export default class LecturerController {
       });
   };
 
-  public updateLecturer = async (req: Request, res: Response): Promise<any> => {
+  public updateRoom = async (req: Request, res: Response): Promise<any> => {
     const {
       _id,
       name,
-      employeeId,
-      faculty,
-      department,
-      centre,
       building,
-      level,
-      rank,
+      roomType,
     } = req.body;
     const collection: any = getCollection();
 
@@ -53,13 +48,8 @@ export default class LecturerController {
         {
           $set: {
             name: name,
-            employeeId: employeeId,
-            faculty: faculty,
-            department: department,
-            centre: centre,
-            building: building,
-            level: level,
-            rank: rank,
+            roomType: roomType,
+            building:building,
           },
         }
       )
@@ -72,7 +62,7 @@ export default class LecturerController {
       });
   };
 
-  public deleteLecturer = async (req: Request, res: Response): Promise<any> => {
+  public deleteRoom = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,7 +77,7 @@ export default class LecturerController {
       });
   };
 
-  public getLecturerById = async (
+  public getRoomById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -109,7 +99,7 @@ export default class LecturerController {
       });
   };
 
-  public getLecturersList = async (
+  public getRoomsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -138,7 +128,7 @@ export default class LecturerController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                items
+                items 
               )
             );
         }

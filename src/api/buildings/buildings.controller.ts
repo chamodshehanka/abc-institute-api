@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Lecturer from "./lecturer.class";
+import Building from "./buildings.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("lecturers");
+  return MongoHelper.client.db("Cluster0").collection("buildings");
 };
 
-export default class LecturerController {
-  public addLecturer = async (req: Request, res: Response): Promise<any> => {
+export default class BuildingController {
+  public addBuilding = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const lecturer = new Lecturer(requestData);
+    const building = new Building(requestData);
 
     collection
-      .insertOne(lecturer)
+      .insertOne(building)
       .then(() => {
         res
           .status(200)
@@ -31,18 +31,8 @@ export default class LecturerController {
       });
   };
 
-  public updateLecturer = async (req: Request, res: Response): Promise<any> => {
-    const {
-      _id,
-      name,
-      employeeId,
-      faculty,
-      department,
-      centre,
-      building,
-      level,
-      rank,
-    } = req.body;
+  public updateBuilding = async (req: Request, res: Response): Promise<any> => {
+    const { _id, buildingName } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -53,13 +43,6 @@ export default class LecturerController {
         {
           $set: {
             name: name,
-            employeeId: employeeId,
-            faculty: faculty,
-            department: department,
-            centre: centre,
-            building: building,
-            level: level,
-            rank: rank,
           },
         }
       )
@@ -72,7 +55,7 @@ export default class LecturerController {
       });
   };
 
-  public deleteLecturer = async (req: Request, res: Response): Promise<any> => {
+  public deleteBuilding = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,7 +70,7 @@ export default class LecturerController {
       });
   };
 
-  public getLecturerById = async (
+  public getBuildingById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -109,7 +92,7 @@ export default class LecturerController {
       });
   };
 
-  public getLecturersList = async (
+  public getBuildingsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
