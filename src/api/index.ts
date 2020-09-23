@@ -10,6 +10,7 @@ import group from "./group/group.route";
 import subGroup from "./sub-group/subGroup.route";
 import buildings from "./buildings/buildings.route";
 import rooms from "./rooms/rooms.route";
+import sessions from "./sessions/session.route";
 
 const router: Router = Router();
 
@@ -28,5 +29,6 @@ router.use("/group", group);
 router.use("/subGroup", subGroup);
 router.use("/buildings", buildings);
 router.use("/rooms", rooms);
+router.use("/sessions", sessions);
 
 export default router;
