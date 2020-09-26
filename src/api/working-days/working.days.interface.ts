@@ -4,20 +4,25 @@ export interface IWorkingDays extends mongoose.Document {
   _id: mongoose.Schema.Types.ObjectId;
   name: string;
   workingHours: {
-    hours: Number;
-    mins: Number;
+    monday: { hours: number; mins: number };
+    tuesday: { hours: number; mins: number };
+    wednesday: { hours: number; mins: number };
+    thursday: { hours: number; mins: number };
+    friday: { hours: number; mins: number };
+    saturday: { hours: number; mins: number };
+    sunday: { hours: number; mins: number };
   };
   selectedDays: {
-    monday: Boolean;
-    tuesday: Boolean;
-    wednesday: Boolean;
-    thursday: Boolean;
-    friday: Boolean;
-    saturday: Boolean;
-    sunday: Boolean;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
   };
   prefferedTimeSlots: {
-    thirty: Boolean;
-    sixty: Boolean;
+    thirty: boolean;
+    sixty: boolean;
   };
 }
