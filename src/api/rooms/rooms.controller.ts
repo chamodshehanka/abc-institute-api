@@ -32,12 +32,7 @@ export default class RoomsController {
   };
 
   public updateRoom = async (req: Request, res: Response): Promise<any> => {
-    const {
-      _id,
-      name,
-      building,
-      roomType,
-    } = req.body;
+    const { _id, name, building, roomType } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -49,7 +44,7 @@ export default class RoomsController {
           $set: {
             name: name,
             roomType: roomType,
-            building:building,
+            building: building,
           },
         }
       )
@@ -77,10 +72,7 @@ export default class RoomsController {
       });
   };
 
-  public getRoomById = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public getRoomById = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -99,10 +91,7 @@ export default class RoomsController {
       });
   };
 
-  public getRoomsList = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public getRoomsList = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     try {
@@ -128,7 +117,7 @@ export default class RoomsController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                items 
+                items
               )
             );
         }
