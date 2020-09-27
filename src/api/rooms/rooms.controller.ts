@@ -35,7 +35,7 @@ export default class RoomsController {
     const {
       _id,
       name,
-      building,
+      buildingName,
       roomType,
     } = req.body;
     const collection: any = getCollection();
@@ -49,7 +49,7 @@ export default class RoomsController {
           $set: {
             name: name,
             roomType: roomType,
-            building:building,
+            buildingName:buildingName,
           },
         }
       )
@@ -138,4 +138,38 @@ export default class RoomsController {
       res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
     }
   };
+
+  public getRoomByBuilding = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const collection: any = getCollection();
+
+    try {
+      collection.find({}).toArray((err: any, items: any[]) => {
+        if (err) {
+          console.error("Caught error", err);
+          res
+            .status(500)
+            .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+          res.end();
+        } else {
+
+          res
+            .status(200)
+            .send(
+              responses.successWithPayload(
+                SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
+                items 
+              )
+            );
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+    }
+  }
+
+
 }

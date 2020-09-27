@@ -32,9 +32,9 @@ export default class BuildingController {
   };
 
   public updateBuilding = async (req: Request, res: Response): Promise<any> => {
-    const { _id, buildingName } = req.body;
+    const { _id, name } = req.body;
     const collection: any = getCollection();
-
+    console.log(_id, name);
     collection
       .findOneAndUpdate(
         {
