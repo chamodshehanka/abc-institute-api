@@ -12,6 +12,7 @@ import subGroup from "./sub-group/subGroup.route";
 import genaraeteSubGroup from "./generatedSubGroups/generatedSubGroup.route";
 import buildings from "./buildings/buildings.route";
 import rooms from "./rooms/rooms.route";
+import sessions from "./sessions/session.route";
 import NotAvailable from "./notAvailableTime/notAvailableTime.route";
 
 const router: Router = Router();
@@ -33,6 +34,7 @@ router.use("/subGroup", subGroup);
 router.use("/genaraeteSubGroup", genaraeteSubGroup);
 router.use("/buildings", buildings);
 router.use("/rooms", rooms);
+router.use("/sessions", sessions);
 router.use("/NotAvailable", NotAvailable);
 
 export default router;
