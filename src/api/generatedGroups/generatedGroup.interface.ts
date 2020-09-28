@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
 
-export interface IBuilding extends mongoose.Document {
+export interface IGeneratedGroup extends mongoose.Document {
   _id: mongoose.Schema.Types.ObjectId;
-  name: string;
+  groupId: string;
 }

@@ -6,8 +6,6 @@ export const RoomsSchema = new mongoose.Schema({
   name: { type: String, required: true },
   roomType: { type: String, required: true },
   building: { type: String, required: true },
-  
-  
 });
 
 const Rooms = mongoose.model<IRooms>("Rooms", RoomsSchema);
