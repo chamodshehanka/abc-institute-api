@@ -4,24 +4,24 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import yearSemester from "./year.class";
+import NotAvailableTime from "./notAvailableTime.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("yearSemester");
+  return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
 };
 
-export default class YearController {
-  public addYearSemester = async (
+export default class NotAvailableTimesController {
+  public addNotAvailableController = async (
     req: Request,
     res: Response
   ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const yearsemester = new yearSemester(requestData);
+    const addNotAvailable = new NotAvailableTime(requestData);
 
     collection
-      .insertOne(yearsemester)
+      .insertOne(addNotAvailable)
       .then(() => {
         res
           .status(200)
@@ -34,11 +34,11 @@ export default class YearController {
       });
   };
 
-  public updateYearSemester = async (
+  public updateNotAvailable = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    const { _id, year, semester } = req.body;
+    const { _id, day, time } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -48,8 +48,8 @@ export default class YearController {
         },
         {
           $set: {
-            year: year,
-            semester: semester,
+            day: day,
+            time: time,
           },
         }
       )
@@ -62,7 +62,7 @@ export default class YearController {
       });
   };
 
-  public deleteYearSemester = async (
+  public deleteNotAvailable = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -80,7 +80,7 @@ export default class YearController {
       });
   };
 
-  public getYearSemesterById = async (
+  public getNotAvailableById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -102,7 +102,7 @@ export default class YearController {
       });
   };
 
-  public getYearSemesterList = async (
+  public getNotAvailableList = async (
     req: Request,
     res: Response
   ): Promise<any> => {

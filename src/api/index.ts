@@ -9,8 +9,10 @@ import tags from "./tags/tags.route";
 import group from "./group/group.route";
 import genaraeteGroup from "./generatedGroups/generatedGroup.route";
 import subGroup from "./sub-group/subGroup.route";
+import genaraeteSubGroup from "./generatedSubGroups/generatedSubGroup.route";
 import buildings from "./buildings/buildings.route";
 import rooms from "./rooms/rooms.route";
+import NotAvailable from "./notAvailableTime/notAvailableTime.route";
 
 const router: Router = Router();
 
@@ -28,7 +30,9 @@ router.use("/tags", tags);
 router.use("/group", group);
 router.use("/genaraeteGroup", genaraeteGroup);
 router.use("/subGroup", subGroup);
+router.use("/genaraeteSubGroup", genaraeteSubGroup);
 router.use("/buildings", buildings);
 router.use("/rooms", rooms);
+router.use("/NotAvailable", NotAvailable);
 
 export default router;
