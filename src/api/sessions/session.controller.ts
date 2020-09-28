@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Lecturer from "./lecturer.class";
+import Session from "./session.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("lecturers");
+  return MongoHelper.client.db("Cluster0").collection("sessions");
 };
 
-export default class LecturerController {
-  public addLecturer = async (req: Request, res: Response): Promise<any> => {
+export default class SessionController {
+  public addSession = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const lecturer = new Lecturer(requestData);
+    const session = new Session(requestData);
 
     collection
-      .insertOne(lecturer)
+      .insertOne(session)
       .then(() => {
         res
           .status(200)
@@ -31,17 +31,16 @@ export default class LecturerController {
       });
   };
 
-  public updateLecturer = async (req: Request, res: Response): Promise<any> => {
+  public updateSession = async (req: Request, res: Response): Promise<any> => {
     const {
       _id,
-      name,
-      employeeId,
-      faculty,
-      department,
-      centre,
-      building,
-      level,
-      rank,
+      lecturers,
+      tags,
+      studentGroup,
+      subject,
+      subjectCode,
+      noOfStudents,
+      duration,
     } = req.body;
     const collection: any = getCollection();
 
@@ -52,14 +51,13 @@ export default class LecturerController {
         },
         {
           $set: {
-            name: name,
-            employeeId: employeeId,
-            faculty: faculty,
-            department: department,
-            centre: centre,
-            building: building,
-            level: level,
-            rank: rank,
+            lecturers: lecturers,
+            tags: tags,
+            studentGroup: studentGroup,
+            subject: subject,
+            subjectCode: subjectCode,
+            noOfStudents: noOfStudents,
+            duration: duration,
           },
         }
       )
@@ -72,7 +70,7 @@ export default class LecturerController {
       });
   };
 
-  public deleteLecturer = async (req: Request, res: Response): Promise<any> => {
+  public deleteSession = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,15 +85,11 @@ export default class LecturerController {
       });
   };
 
-  public getLecturerById = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    const id = req.params.id;
+  public getSessionById = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     collection
-      .findOne({ _id: new mongodb.ObjectId(id) })
+      .findOne({ _id: req.params.id })
       .then((data: any) => {
         res.send(
           responses.successWithPayload(
@@ -110,7 +104,7 @@ export default class LecturerController {
       });
   };
 
-  public getLecturersList = async (
+  public getSessionsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -125,15 +119,6 @@ export default class LecturerController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
-          // items = items.map(
-          //   (item: { _id: any; name: any; email: any; phone: any }) => {
-          //     return {
-          //       id: item._id,
-          //       name: item.name,
-          //     };
-          //   }
-          // );
-
           res
             .status(200)
             .send(

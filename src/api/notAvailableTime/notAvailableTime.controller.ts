@@ -4,21 +4,24 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Lecturer from "./lecturer.class";
+import NotAvailableTime from "./notAvailableTime.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("lecturers");
+  return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
 };
 
-export default class LecturerController {
-  public addLecturer = async (req: Request, res: Response): Promise<any> => {
+export default class NotAvailableTimesController {
+  public addNotAvailableController = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const lecturer = new Lecturer(requestData);
+    const addNotAvailable = new NotAvailableTime(requestData);
 
     collection
-      .insertOne(lecturer)
+      .insertOne(addNotAvailable)
       .then(() => {
         res
           .status(200)
@@ -31,18 +34,11 @@ export default class LecturerController {
       });
   };
 
-  public updateLecturer = async (req: Request, res: Response): Promise<any> => {
-    const {
-      _id,
-      name,
-      employeeId,
-      faculty,
-      department,
-      centre,
-      building,
-      level,
-      rank,
-    } = req.body;
+  public updateNotAvailable = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const { _id, day, time } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -52,14 +48,8 @@ export default class LecturerController {
         },
         {
           $set: {
-            name: name,
-            employeeId: employeeId,
-            faculty: faculty,
-            department: department,
-            centre: centre,
-            building: building,
-            level: level,
-            rank: rank,
+            day: day,
+            time: time,
           },
         }
       )
@@ -72,7 +62,10 @@ export default class LecturerController {
       });
   };
 
-  public deleteLecturer = async (req: Request, res: Response): Promise<any> => {
+  public deleteNotAvailable = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,15 +80,14 @@ export default class LecturerController {
       });
   };
 
-  public getLecturerById = async (
+  public getNotAvailableById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    const id = req.params.id;
     const collection: any = getCollection();
 
     collection
-      .findOne({ _id: new mongodb.ObjectId(id) })
+      .findOne({ _id: req.params.id })
       .then((data: any) => {
         res.send(
           responses.successWithPayload(
@@ -110,7 +102,7 @@ export default class LecturerController {
       });
   };
 
-  public getLecturersList = async (
+  public getNotAvailableList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
