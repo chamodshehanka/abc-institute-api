@@ -15,10 +15,6 @@ const getCollection = () => {
   return MongoHelper.client.db("Cluster0").collection("timetables");
 };
 
-const getNotAvailableTime = () => {
-  return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
-};
-
 export default class TimetableController {
   public generateTimetable = async (
     req: Request,
