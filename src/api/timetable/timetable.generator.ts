@@ -14,7 +14,7 @@ export async function generateTimetableByLecturer(lecturerName: string) {
   const sessionsCollection: any = getSessions();
 
   let sessionsList: ISession[];
-  let selectedSession: ISession[];
+  let selectedSession: ISession[] = new Array();
 
   try {
     sessionsList = await sessionsCollection.find({}).toArray();
@@ -25,6 +25,8 @@ export async function generateTimetableByLecturer(lecturerName: string) {
         }
       });
     });
+
+    console.log(selectedSession);
   } catch (e) {
     console.error(e);
   }
