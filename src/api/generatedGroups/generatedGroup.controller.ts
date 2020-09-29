@@ -4,21 +4,28 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Lecturer from "./lecturer.class";
+import GeneratedGroup from "./generatedGroup.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("lecturers");
+  return MongoHelper.client.db("Cluster0").collection("generatedGroupsID");
 };
 
-export default class LecturerController {
-  public addLecturer = async (req: Request, res: Response): Promise<any> => {
+const getyearSemesterCollection = () => {
+  return MongoHelper.client.db("Cluster0").collection("yearSemester");
+};
+
+export default class GeneratedGroupController {
+  public GeneratedGroupAdd = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const lecturer = new Lecturer(requestData);
+    const generatedgroup = new GeneratedGroup(requestData);
 
     collection
-      .insertOne(lecturer)
+      .insertOne(generatedgroup)
       .then(() => {
         res
           .status(200)
@@ -31,48 +38,7 @@ export default class LecturerController {
       });
   };
 
-  public updateLecturer = async (req: Request, res: Response): Promise<any> => {
-    const {
-      _id,
-      name,
-      employeeId,
-      faculty,
-      department,
-      centre,
-      building,
-      level,
-      rank,
-    } = req.body;
-    const collection: any = getCollection();
-
-    collection
-      .findOneAndUpdate(
-        {
-          _id: new mongodb.ObjectId(_id),
-        },
-        {
-          $set: {
-            name: name,
-            employeeId: employeeId,
-            faculty: faculty,
-            department: department,
-            centre: centre,
-            building: building,
-            level: level,
-            rank: rank,
-          },
-        }
-      )
-      .then(() => {
-        res.send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_UPDATED));
-      })
-      .catch((err: any) => {
-        console.error(ErrorCodes.USER_UPDATE_FAILED, err);
-        res.send(responses.failed(ErrorCodes.DATA_UPDATE_FAILED));
-      });
-  };
-
-  public deleteLecturer = async (req: Request, res: Response): Promise<any> => {
+  public deleteGroup = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,15 +53,11 @@ export default class LecturerController {
       });
   };
 
-  public getLecturerById = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    const id = req.params.id;
+  public getGroupById = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     collection
-      .findOne({ _id: new mongodb.ObjectId(id) })
+      .findOne({ _id: req.params.id })
       .then((data: any) => {
         res.send(
           responses.successWithPayload(
@@ -110,7 +72,7 @@ export default class LecturerController {
       });
   };
 
-  public getLecturersList = async (
+  public GeneratedGrouplist = async (
     req: Request,
     res: Response
   ): Promise<any> => {
