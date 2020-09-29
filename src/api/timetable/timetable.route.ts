@@ -9,5 +9,6 @@ timetable.put("/update", controller.updateTimetable);
 timetable.delete("/delete/:id", controller.deleteTimetable);
 timetable.get("/get/:id", controller.getTimetableById);
 timetable.get("/list", controller.getTimetablesList);
+timetable.post("/generate", controller.generateTimetable);
 
 export default timetable;

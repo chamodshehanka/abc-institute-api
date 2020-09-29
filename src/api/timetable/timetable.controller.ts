@@ -5,12 +5,42 @@ import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
 import Timetable from "./timetable.class";
+import {
+  generateTimetableByLecturer,
+  generateTimetableByRoom,
+  generateTimetableByStudentGroup,
+} from "./timetable.generator";
 
 const getCollection = () => {
   return MongoHelper.client.db("Cluster0").collection("timetables");
 };
 
+const getNotAvailableTime = () => {
+  return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
+};
+
 export default class TimetableController {
+  public generateTimetable = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const { input, type } = req.body;
+
+    switch (type) {
+      case "lecturer":
+        generateTimetableByLecturer(input);
+        break;
+      case "stdGroup":
+        generateTimetableByStudentGroup(input);
+        break;
+      case "room":
+        generateTimetableByRoom(input);
+        break;
+      default:
+        res.send(responses.failed(ErrorCodes.INVALID_TYPE));
+    }
+  };
+
   public addTimetable = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
