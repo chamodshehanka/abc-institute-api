@@ -1,27 +1,27 @@
-name: ABC Institute API Docker Image CI/CD
+# name: ABC Institute API Docker Image CI/CD
 
-on:
-  push:
-    branches: [ master ]
+# on:
+#   push:
+#     branches: [ master ]
 #   pull_request:
 #     branches: [ master ]
 
-jobs:
+# jobs:
 
-  build:
+#   build:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Docker Login
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
-      run: |
-        docker login -u $DOCKER_USER -p $DOCKER_TOKEN
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag chamodshehanka/abc-institute-api:$(date +%s)
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Docker Login
+#       env:
+#         DOCKER_USER: ${{secrets.DOCKER_USER}}
+#         DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
+#       run: |
+#         docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+#     - name: Build the Docker image
+#       run: docker build . --file Dockerfile --tag chamodshehanka/abc-institute-api:$(date +%s)
       
-    - name: Docker Push
-      run: docker push chamodshehanka/abc-institute-api
+#     - name: Docker Push
+#       run: docker push chamodshehanka/abc-institute-api

@@ -4,23 +4,24 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import bcrypt = require("bcrypt");
-import jwt = require("jsonwebtoken");
-import WorkingDays from "./working.days.class";
+import GeneratedSubGroup from "./generatedSubGroup.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("workingDays");
+  return MongoHelper.client.db("Cluster0").collection("generatedSubGroupsID");
 };
 
-export default class WorkingDaysController {
-  public addWorkingDays = async (req: Request, res: Response): Promise<any> => {
+export default class GeneratedSubGroupController {
+  public GeneratedSubGroupAdd = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const workingDays = new WorkingDays(requestData);
+    const generatedsubgroup = new GeneratedSubGroup(requestData);
 
     collection
-      .insertOne(workingDays)
+      .insertOne(generatedsubgroup)
       .then(() => {
         res
           .status(200)
@@ -33,46 +34,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public updateWorkingDays = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    const {
-      _id,
-      name,
-      workingHours,
-      selectedDays,
-      prefferedTimeSlots,
-    } = req.body;
-    const collection: any = getCollection();
-
-    collection
-      .findOneAndUpdate(
-        {
-          _id: new mongodb.ObjectId(_id),
-        },
-        {
-          $set: {
-            name: name,
-            workingHours: workingHours,
-            selectedDays: selectedDays,
-            prefferedTimeSlots: prefferedTimeSlots,
-          },
-        }
-      )
-      .then(() => {
-        res.send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_UPDATED));
-      })
-      .catch((err: any) => {
-        console.error(ErrorCodes.USER_UPDATE_FAILED, err);
-        res.send(responses.failed(ErrorCodes.DATA_UPDATE_FAILED));
-      });
-  };
-
-  public deleteWorkingDays = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public deleteSubGroup = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,7 +49,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public getWorkingDaysById = async (
+  public getSubGroupById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -109,7 +71,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public getWorkingDaysList = async (
+  public GeneratedSubGrouplist = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -124,6 +86,15 @@ export default class WorkingDaysController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
+          // items = items.map(
+          //   (item: { _id: any; name: any; email: any; phone: any }) => {
+          //     return {
+          //       id: item._id,
+          //       name: item.name,
+          //     };
+          //   }
+          // );
+
           res
             .status(200)
             .send(

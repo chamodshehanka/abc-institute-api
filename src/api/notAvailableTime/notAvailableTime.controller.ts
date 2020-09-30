@@ -4,23 +4,24 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import bcrypt = require("bcrypt");
-import jwt = require("jsonwebtoken");
-import WorkingDays from "./working.days.class";
+import NotAvailableTime from "./notAvailableTime.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("workingDays");
+  return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
 };
 
-export default class WorkingDaysController {
-  public addWorkingDays = async (req: Request, res: Response): Promise<any> => {
+export default class NotAvailableTimesController {
+  public addNotAvailableController = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const workingDays = new WorkingDays(requestData);
+    const addNotAvailable = new NotAvailableTime(requestData);
 
     collection
-      .insertOne(workingDays)
+      .insertOne(addNotAvailable)
       .then(() => {
         res
           .status(200)
@@ -33,17 +34,11 @@ export default class WorkingDaysController {
       });
   };
 
-  public updateWorkingDays = async (
+  public updateNotAvailable = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    const {
-      _id,
-      name,
-      workingHours,
-      selectedDays,
-      prefferedTimeSlots,
-    } = req.body;
+    const { _id, day, time } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -53,10 +48,8 @@ export default class WorkingDaysController {
         },
         {
           $set: {
-            name: name,
-            workingHours: workingHours,
-            selectedDays: selectedDays,
-            prefferedTimeSlots: prefferedTimeSlots,
+            day: day,
+            time: time,
           },
         }
       )
@@ -69,7 +62,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public deleteWorkingDays = async (
+  public deleteNotAvailable = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -87,7 +80,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public getWorkingDaysById = async (
+  public getNotAvailableById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -109,7 +102,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public getWorkingDaysList = async (
+  public getNotAvailableList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -124,6 +117,15 @@ export default class WorkingDaysController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
+          // items = items.map(
+          //   (item: { _id: any; name: any; email: any; phone: any }) => {
+          //     return {
+          //       id: item._id,
+          //       name: item.name,
+          //     };
+          //   }
+          // );
+
           res
             .status(200)
             .send(

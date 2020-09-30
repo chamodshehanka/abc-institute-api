@@ -4,23 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import bcrypt = require("bcrypt");
-import jwt = require("jsonwebtoken");
-import WorkingDays from "./working.days.class";
+import Session from "./session.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("workingDays");
+  return MongoHelper.client.db("Cluster0").collection("sessions");
 };
 
-export default class WorkingDaysController {
-  public addWorkingDays = async (req: Request, res: Response): Promise<any> => {
+export default class SessionController {
+  public addSession = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const workingDays = new WorkingDays(requestData);
+    const session = new Session(requestData);
 
     collection
-      .insertOne(workingDays)
+      .insertOne(session)
       .then(() => {
         res
           .status(200)
@@ -33,16 +31,16 @@ export default class WorkingDaysController {
       });
   };
 
-  public updateWorkingDays = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public updateSession = async (req: Request, res: Response): Promise<any> => {
     const {
       _id,
-      name,
-      workingHours,
-      selectedDays,
-      prefferedTimeSlots,
+      lecturers,
+      tags,
+      studentGroup,
+      subject,
+      subjectCode,
+      noOfStudents,
+      duration,
     } = req.body;
     const collection: any = getCollection();
 
@@ -53,10 +51,13 @@ export default class WorkingDaysController {
         },
         {
           $set: {
-            name: name,
-            workingHours: workingHours,
-            selectedDays: selectedDays,
-            prefferedTimeSlots: prefferedTimeSlots,
+            lecturers: lecturers,
+            tags: tags,
+            studentGroup: studentGroup,
+            subject: subject,
+            subjectCode: subjectCode,
+            noOfStudents: noOfStudents,
+            duration: duration,
           },
         }
       )
@@ -69,10 +70,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public deleteWorkingDays = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public deleteSession = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -87,10 +85,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public getWorkingDaysById = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public getSessionById = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -109,7 +104,7 @@ export default class WorkingDaysController {
       });
   };
 
-  public getWorkingDaysList = async (
+  public getSessionsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
