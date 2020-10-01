@@ -1,6 +1,11 @@
 import { MongoHelper } from "../../config/mongodb.config";
+import { IGeneratedGroup } from "../generatedGroups/generatedGroup.interface";
 import { INotAvailableTime } from "../notAvailableTime/notAvailableTime.interface";
+import { IRooms } from "../rooms/rooms.interface";
+import Session from "../sessions/session.class";
 import { ISession } from "../sessions/session.interface";
+import sessions from "../sessions/session.route";
+import { IWorkingDays } from "../working-days/working.days.interface";
 
 const getNotAvailableTime = () => {
   return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
@@ -10,48 +15,18 @@ const getSessions = () => {
   return MongoHelper.client.db("Cluster0").collection("sessions");
 };
 
-export async function generateTimetableByLecturer(lecturerName: string) {
+const getRooms = () => {
+  return MongoHelper.client.db("Cluster0").collection("rooms");
+};
+
+export async function generateTimetable(workingDay: IWorkingDays, groups: []) {
   const notAvailableCollection: any = getNotAvailableTime();
   const sessionsCollection: any = getSessions();
-
-  let sessionsList: ISession[];
-  let notAvailableTimeList: INotAvailableTime[];
-
-  let selectedSession: ISession[] = new Array();
-  let selectedNotAvailableTimeList: INotAvailableTime[] = new Array();
-
-  try {
-    sessionsList = await sessionsCollection.find({}).toArray();
-    sessionsList.forEach((session) => {
-      session.lecturers.forEach((lecturer) => {
-        if (lecturerName === lecturer) {
-          selectedSession.push(session);
-        }
-      });
-    });
-
-    notAvailableTimeList = await notAvailableCollection.find({}).toArray();
-    notAvailableTimeList.forEach((notAvailableTime) => {
-      if (
-        notAvailableTime.type === "Lecturer" &&
-        notAvailableTime.name === lecturerName
-      ) {
-        selectedNotAvailableTimeList.push(notAvailableTime);
-      }
-    });
-
-    console.log(selectedNotAvailableTimeList, selectedSession);
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-export async function generateTimetableByStudentGroup(groupId: string) {
-  const notAvailableCollection: any = getNotAvailableTime();
-  const sessionsCollection: any = getSessions();
+  const roomsCollection: any = getRooms();
 
   let notAvailableTimeList: INotAvailableTime[];
   let sessionsList: ISession[];
+  let roomsList: IRooms[];
 
   let notAvailableTimeListByLecturer: INotAvailableTime[] = new Array();
   let notAvailableTimeListByRoom: INotAvailableTime[] = new Array();
@@ -62,6 +37,10 @@ export async function generateTimetableByStudentGroup(groupId: string) {
 
   try {
     notAvailableTimeList = await notAvailableCollection.find({}).toArray();
+    sessionsList = await sessionsCollection.find({}).toArray();
+    roomsList = await roomsCollection.find({}).toArray();
+
+    // Load not available time list to arrays
     notAvailableTimeList.forEach((notAvailableTime) => {
       switch (notAvailableTime.type) {
         case "Lecturer":
@@ -81,51 +60,15 @@ export async function generateTimetableByStudentGroup(groupId: string) {
       }
     });
 
-    sessionsList = await sessionsCollection.find({}).toArray();
     sessionsList.forEach((session) => {
-      if (groupId === session.studentGroup) {
-        selectedSessionList.push(session);
-      }
-    });
-
-    selectedSessionList.forEach((session) => {
-      //loop to get time slots
-      //  add room prop later
-      const { lecturers, studentGroup } = session;
-
-      let count = 0;
-      let startTime = "";
-      let endTime = "";
-      let day = "Monday";
-      let lecturerCount = 0;
-
-      lecturers.forEach(() => {
-        let lecturerNotAvailableTime: INotAvailableTime;
-
-        notAvailableTimeListByLecturer.forEach((l) => {
-          if (l.day === day && l.stime === startTime && l.ltime === endTime) {
-            lecturerNotAvailableTime = l;
-          }
-
-          if (lecturerNotAvailableTime === undefined) {
-            lecturerCount++;
-          }
-
-          if (lecturers.length === lecturerCount) count++;
-        });
+      groups.forEach((group) => {
+        if (group === session.studentGroup) selectedSessionList.push(session);
       });
-
-      if (count === 1) {
-        // Next conditions
-      } else {
-        // break
-      }
     });
+
+    return { success: false, message: "Success" };
   } catch (e) {
     console.error(e);
+    return { success: false, message: e };
   }
-}
-
-export function generateTimetableByRoom(roomName: string) {
-  const notAvailableCollection: any = getNotAvailableTime();
 }

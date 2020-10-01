@@ -5,11 +5,8 @@ import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
 import Timetable from "./timetable.class";
-import {
-  generateTimetableByLecturer,
-  generateTimetableByRoom,
-  generateTimetableByStudentGroup,
-} from "./timetable.generator";
+import { generateTimetable } from "./timetable.generator";
+import workingDays from "../working-days/working.days.route";
 
 const getCollection = () => {
   return MongoHelper.client.db("Cluster0").collection("timetables");
@@ -20,21 +17,11 @@ export default class TimetableController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    const { input, type } = req.body;
+    const { workingDay, groups } = req.body;
 
-    switch (type) {
-      case "lecturer":
-        generateTimetableByLecturer(input);
-        break;
-      case "stdGroup":
-        generateTimetableByStudentGroup(input);
-        break;
-      case "room":
-        generateTimetableByRoom(input);
-        break;
-      default:
-        res.send(responses.failed(ErrorCodes.INVALID_TYPE));
-    }
+    const isGenerated = await generateTimetable(workingDay, groups);
+    console.log("is Generated : ", isGenerated);
+    res.send(isGenerated);
   };
 
   public addTimetable = async (req: Request, res: Response): Promise<any> => {
