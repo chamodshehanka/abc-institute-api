@@ -11,7 +11,6 @@ export const LecturerSchema = new mongoose.Schema({
   building: { type: String, required: true },
   level: { type: String, required: true },
   rank: { type: Number, required: true },
-  room: { type: String, required: false },
 });
 
 const Lecturer = mongoose.model<ILecturer>("Lecturer", LecturerSchema);

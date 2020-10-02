@@ -52,7 +52,6 @@ export default class LecturerController {
       building,
       level,
       rank,
-      room,
     } = req.body;
     const collection: any = getCollection();
 
@@ -71,7 +70,6 @@ export default class LecturerController {
             building: building,
             level: level,
             rank: rank,
-            room: room,
           },
         }
       )
