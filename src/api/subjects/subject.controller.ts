@@ -40,6 +40,7 @@ export default class SubjectController {
         }
       });
   };
+  
   public updateSubject = async (req: Request, res: Response): Promise<any> => {
     const {
       _id,
@@ -135,7 +136,7 @@ export default class SubjectController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items
               )
             );
         }

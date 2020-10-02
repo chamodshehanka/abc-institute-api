@@ -124,21 +124,12 @@ export default class WorkingDaysController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
-          // items = items.map(
-          //   (item: { _id: any; name: any; email: any; phone: any }) => {
-          //     return {
-          //       id: item._id,
-          //       name: item.name,
-          //     };
-          //   }
-          // );
-
           res
             .status(200)
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                { data: items }
+                items
               )
             );
         }

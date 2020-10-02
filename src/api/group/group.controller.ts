@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Timetable from "./timetable.class";
+import Group from "./group.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("timetables");
+  return MongoHelper.client.db("Cluster0").collection("group");
 };
 
-export default class TimetableController {
-  public addTimetable = async (req: Request, res: Response): Promise<any> => {
+export default class GroupController {
+  public addGroup = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const timetable = new Timetable(requestData);
+    const group = new Group(requestData);
 
     collection
-      .insertOne(timetable)
+      .insertOne(group)
       .then(() => {
         res
           .status(200)
@@ -31,11 +31,8 @@ export default class TimetableController {
       });
   };
 
-  public updateTimetable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    const { _id, name } = req.body;
+  public updateGroup = async (req: Request, res: Response): Promise<any> => {
+    const { _id, number } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -45,7 +42,7 @@ export default class TimetableController {
         },
         {
           $set: {
-            name: name,
+            number: number,
           },
         }
       )
@@ -58,10 +55,7 @@ export default class TimetableController {
       });
   };
 
-  public deleteTimetable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public deleteGroup = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -76,10 +70,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetableById = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public getGroupById = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -98,10 +89,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetablesList = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public getGroupList = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     try {
@@ -113,6 +101,15 @@ export default class TimetableController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
+          // items = items.map(
+          //   (item: { _id: any; name: any; email: any; phone: any }) => {
+          //     return {
+          //       id: item._id,
+          //       name: item.name,
+          //     };
+          //   }
+          // );
+
           res
             .status(200)
             .send(
