@@ -15,6 +15,9 @@ import rooms from "./rooms/rooms.route";
 import sessions from "./sessions/session.route";
 import NotAvailable from "./notAvailableTime/notAvailableTime.route";
 import timeslot from "./timeslots/timeslot.route";
+import psessions from "./parallelSession/parallelSession.route";
+import csessions from "./consecutiveSession/consecutiveSession.route";
+import osessions from "./overlapSession/overlapSession.route";
 
 const router: Router = Router();
 
@@ -38,5 +41,8 @@ router.use("/rooms", rooms);
 router.use("/sessions", sessions);
 router.use("/NotAvailable", NotAvailable);
 router.use("/timeslot", timeslot);
+router.use("/psessions", psessions);
+router.use("/csessions", csessions);
+router.use("/osessions", osessions);
 
 export default router;

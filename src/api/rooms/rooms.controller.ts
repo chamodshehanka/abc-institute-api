@@ -32,7 +32,12 @@ export default class RoomsController {
   };
 
   public updateRoom = async (req: Request, res: Response): Promise<any> => {
-    const { _id, name, building, roomType } = req.body;
+    const {
+      _id,
+      name,
+      buildingName,
+      roomType,
+    } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -44,7 +49,7 @@ export default class RoomsController {
           $set: {
             name: name,
             roomType: roomType,
-            building: building,
+            buildingName:buildingName,
           },
         }
       )
@@ -72,7 +77,10 @@ export default class RoomsController {
       });
   };
 
-  public getRoomById = async (req: Request, res: Response): Promise<any> => {
+  public getRoomById = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -91,7 +99,10 @@ export default class RoomsController {
       });
   };
 
-  public getRoomsList = async (req: Request, res: Response): Promise<any> => {
+  public getRoomsList = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const collection: any = getCollection();
 
     try {
@@ -117,7 +128,7 @@ export default class RoomsController {
             .send(
               responses.successWithPayload(
                 SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                items
+                items 
               )
             );
         }
@@ -127,4 +138,38 @@ export default class RoomsController {
       res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
     }
   };
+
+  public getRoomByBuilding = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const collection: any = getCollection();
+
+    try {
+      collection.find({}).toArray((err: any, items: any[]) => {
+        if (err) {
+          console.error("Caught error", err);
+          res
+            .status(500)
+            .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+          res.end();
+        } else {
+
+          res
+            .status(200)
+            .send(
+              responses.successWithPayload(
+                SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
+                items 
+              )
+            );
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+    }
+  }
+
+
 }
