@@ -10,6 +10,7 @@ export const SessionSchema = new mongoose.Schema({
   subjectCode: { type: String, required: true },
   noOfStudents: { type: Number, required: true },
   duration: { type: Number, required: true },
+  rooms: { type: [String], required: true },
 });
 
 const Session = mongoose.model<ISession>("Session", SessionSchema);
