@@ -18,16 +18,26 @@ export default class LecturerController {
     const lecturer = new Lecturer(requestData);
 
     collection
-      .insertOne(lecturer)
-      .then(() => {
-        res
-          .status(200)
-          .send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_ADDED));
-        res.end();
+      .findOne({
+        employeeId: requestData.employeeId,
       })
-      .catch((err: any) => {
-        console.error(err);
-        res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+      .then((employee) => {
+        if (!employee) {
+          collection
+            .insertOne(lecturer)
+            .then(() => {
+              res
+                .status(200)
+                .send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_ADDED));
+              res.end();
+            })
+            .catch((err: any) => {
+              console.error(err);
+              res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+            });
+        } else {
+          res.send(responses.failed(ErrorCodes.ALREADY_EXIST, 400));
+        }
       });
   };
 
@@ -42,6 +52,7 @@ export default class LecturerController {
       building,
       level,
       rank,
+      room,
     } = req.body;
     const collection: any = getCollection();
 
@@ -60,6 +71,7 @@ export default class LecturerController {
             building: building,
             level: level,
             rank: rank,
+            room: room,
           },
         }
       )
