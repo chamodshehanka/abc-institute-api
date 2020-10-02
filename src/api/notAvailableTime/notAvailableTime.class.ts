@@ -8,6 +8,8 @@ export const NotAvailableTimeSchema = new mongoose.Schema({
   name: { type: String, required: true },
   day: { type: String, required: true },
   time: { type: String, required: true },
+  stime: { type: String, required: true },
+  ltime: { type: String, required: true },
 });
 
 const NotAvailableTime = mongoose.model<INotAvailableTime>(

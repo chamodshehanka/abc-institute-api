@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Rooms from "./rooms.class";
+import OSession from "./overlapSession.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("rooms");
+  return MongoHelper.client.db("Cluster0").collection("overlapSession");
 };
 
-export default class RoomsController {
-  public addRoom = async (req: Request, res: Response): Promise<any> => {
+export default class OSessionController {
+  public addOSession = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const room = new Rooms(requestData);
+    const osession = new OSession(requestData);
 
     collection
-      .insertOne(room)
+      .insertOne(osession)
       .then(() => {
         res
           .status(200)
@@ -31,33 +31,7 @@ export default class RoomsController {
       });
   };
 
-  public updateRoom = async (req: Request, res: Response): Promise<any> => {
-    const { _id, name, buildingName, roomType } = req.body;
-    const collection: any = getCollection();
-
-    collection
-      .findOneAndUpdate(
-        {
-          _id: new mongodb.ObjectId(_id),
-        },
-        {
-          $set: {
-            name: name,
-            roomType: roomType,
-            buildingName: buildingName,
-          },
-        }
-      )
-      .then(() => {
-        res.send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_UPDATED));
-      })
-      .catch((err: any) => {
-        console.error(ErrorCodes.USER_UPDATE_FAILED, err);
-        res.send(responses.failed(ErrorCodes.DATA_UPDATE_FAILED));
-      });
-  };
-
-  public deleteRoom = async (req: Request, res: Response): Promise<any> => {
+  public deleteOSession = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -72,7 +46,10 @@ export default class RoomsController {
       });
   };
 
-  public getRoomById = async (req: Request, res: Response): Promise<any> => {
+  public getOSessionById = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -91,44 +68,7 @@ export default class RoomsController {
       });
   };
 
-  public getRoomsList = async (req: Request, res: Response): Promise<any> => {
-    const collection: any = getCollection();
-
-    try {
-      collection.find({}).toArray((err: any, items: any[]) => {
-        if (err) {
-          console.error("Caught error", err);
-          res
-            .status(500)
-            .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
-          res.end();
-        } else {
-          // items = items.map(
-          //   (item: { _id: any; name: any; email: any; phone: any }) => {
-          //     return {
-          //       id: item._id,
-          //       name: item.name,
-          //     };
-          //   }
-          // );
-
-          res
-            .status(200)
-            .send(
-              responses.successWithPayload(
-                SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
-                items
-              )
-            );
-        }
-      });
-    } catch (err) {
-      console.error(err);
-      res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
-    }
-  };
-
-  public getRoomByBuilding = async (
+  public getOSessionsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {

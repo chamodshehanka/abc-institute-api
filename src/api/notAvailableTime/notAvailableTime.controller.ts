@@ -38,7 +38,7 @@ export default class NotAvailableTimesController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    const { _id, day, time } = req.body;
+    const { _id, day, stime, ltime } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -49,7 +49,8 @@ export default class NotAvailableTimesController {
         {
           $set: {
             day: day,
-            time: time,
+            stime: stime,
+            ltime: ltime,
           },
         }
       )
