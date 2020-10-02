@@ -41,6 +41,7 @@ export default class SessionController {
       subjectCode,
       noOfStudents,
       duration,
+      rooms,
     } = req.body;
     const collection: any = getCollection();
 
@@ -58,6 +59,7 @@ export default class SessionController {
             subjectCode: subjectCode,
             noOfStudents: noOfStudents,
             duration: duration,
+            rooms: rooms,
           },
         }
       )

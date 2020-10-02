@@ -32,7 +32,7 @@ export default class GroupController {
   };
 
   public updateGroup = async (req: Request, res: Response): Promise<any> => {
-    const { _id, number } = req.body;
+    const { _id, number, rooms } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -43,6 +43,7 @@ export default class GroupController {
         {
           $set: {
             number: number,
+            rooms: rooms,
           },
         }
       )
