@@ -68,7 +68,7 @@ export async function generateTimetable(workingDay: IWorkingDays, groups: []) {
       let sLits: ISession[] = new Array();
 
       selectedSessionList.forEach((s) => {
-        if (s.room === room.name) {
+        if (s.rooms[0] === room.name) {
         }
       });
     });
