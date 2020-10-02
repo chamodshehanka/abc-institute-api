@@ -4,24 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import yearSemester from "./year.class";
+import OSession from "./overlapSession.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("yearSemester");
+  return MongoHelper.client.db("Cluster0").collection("overlapSession");
 };
 
-export default class YearController {
-  public addYearSemester = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+export default class OSessionController {
+  public addOSession = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const yearsemester = new yearSemester(requestData);
+    const osession = new OSession(requestData);
 
     collection
-      .insertOne(yearsemester)
+      .insertOne(osession)
       .then(() => {
         res
           .status(200)
@@ -34,38 +31,7 @@ export default class YearController {
       });
   };
 
-  public updateYearSemester = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    const { _id, year, semester } = req.body;
-    const collection: any = getCollection();
-
-    collection
-      .findOneAndUpdate(
-        {
-          _id: new mongodb.ObjectId(_id),
-        },
-        {
-          $set: {
-            year: year,
-            semester: semester,
-          },
-        }
-      )
-      .then(() => {
-        res.send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_UPDATED));
-      })
-      .catch((err: any) => {
-        console.error(ErrorCodes.USER_UPDATE_FAILED, err);
-        res.send(responses.failed(ErrorCodes.DATA_UPDATE_FAILED));
-      });
-  };
-
-  public deleteYearSemester = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public deleteOSession = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -80,7 +46,7 @@ export default class YearController {
       });
   };
 
-  public getYearSemesterById = async (
+  public getOSessionById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -102,7 +68,7 @@ export default class YearController {
       });
   };
 
-  public getYearSemesterList = async (
+  public getOSessionsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -117,15 +83,6 @@ export default class YearController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
-          // items = items.map(
-          //   (item: { _id: any; name: any; email: any; phone: any }) => {
-          //     return {
-          //       id: item._id,
-          //       name: item.name,
-          //     };
-          //   }
-          // );
-
           res
             .status(200)
             .send(
