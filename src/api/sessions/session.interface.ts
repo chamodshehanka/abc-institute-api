@@ -9,4 +9,5 @@ export interface ISession extends mongoose.Document {
   subjectCode: string;
   noOfStudents: number;
   duration: number;
+  room: string;
 }

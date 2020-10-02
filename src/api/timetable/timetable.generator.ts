@@ -6,6 +6,7 @@ import Session from "../sessions/session.class";
 import { ISession } from "../sessions/session.interface";
 import sessions from "../sessions/session.route";
 import { IWorkingDays } from "../working-days/working.days.interface";
+import workingDays from "../working-days/working.days.route";
 
 const getNotAvailableTime = () => {
   return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
@@ -65,6 +66,25 @@ export async function generateTimetable(workingDay: IWorkingDays, groups: []) {
         if (group === session.studentGroup) selectedSessionList.push(session);
       });
     });
+
+    roomsList.forEach((room) => {
+      // split session according to room
+      let sLits: ISession[] = new Array();
+
+      selectedSessionList.forEach((s) => {
+        if (s.room === room.name) {
+        }
+      });
+    });
+
+    let isSixtyPreffered: boolean = false;
+    if (workingDay?.prefferedTimeSlots?.sixty) {
+      isSixtyPreffered = true;
+    }
+
+    if (isSixtyPreffered) {
+    } else {
+    }
 
     return { success: false, message: "Success" };
   } catch (e) {
