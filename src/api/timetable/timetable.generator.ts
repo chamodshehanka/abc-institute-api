@@ -1,12 +1,8 @@
 import { MongoHelper } from "../../config/mongodb.config";
-import { IGeneratedGroup } from "../generatedGroups/generatedGroup.interface";
 import { INotAvailableTime } from "../notAvailableTime/notAvailableTime.interface";
 import { IRooms } from "../rooms/rooms.interface";
-import Session from "../sessions/session.class";
 import { ISession } from "../sessions/session.interface";
-import sessions from "../sessions/session.route";
 import { IWorkingDays } from "../working-days/working.days.interface";
-import workingDays from "../working-days/working.days.route";
 
 const getNotAvailableTime = () => {
   return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
