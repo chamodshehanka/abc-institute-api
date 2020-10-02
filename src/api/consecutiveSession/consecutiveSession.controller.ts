@@ -4,24 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import NotAvailableTime from "./notAvailableTime.class";
+import CSession from "./consecutiveSession.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
+  return MongoHelper.client.db("Cluster0").collection("consecutiveSession");
 };
 
-export default class NotAvailableTimesController {
-  public addNotAvailableController = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+export default class CSessionController {
+  public addCSession = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const addNotAvailable = new NotAvailableTime(requestData);
+    const csession = new CSession(requestData);
 
     collection
-      .insertOne(addNotAvailable)
+      .insertOne(csession)
       .then(() => {
         res
           .status(200)
@@ -34,39 +31,7 @@ export default class NotAvailableTimesController {
       });
   };
 
-  public updateNotAvailable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    const { _id, day, stime, ltime } = req.body;
-    const collection: any = getCollection();
-
-    collection
-      .findOneAndUpdate(
-        {
-          _id: new mongodb.ObjectId(_id),
-        },
-        {
-          $set: {
-            day: day,
-            stime: stime,
-            ltime: ltime,
-          },
-        }
-      )
-      .then(() => {
-        res.send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_UPDATED));
-      })
-      .catch((err: any) => {
-        console.error(ErrorCodes.USER_UPDATE_FAILED, err);
-        res.send(responses.failed(ErrorCodes.DATA_UPDATE_FAILED));
-      });
-  };
-
-  public deleteNotAvailable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public deleteCSession = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -81,7 +46,7 @@ export default class NotAvailableTimesController {
       });
   };
 
-  public getNotAvailableById = async (
+  public getCSessionById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -103,7 +68,7 @@ export default class NotAvailableTimesController {
       });
   };
 
-  public getNotAvailableList = async (
+  public getCSessionsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -118,15 +83,6 @@ export default class NotAvailableTimesController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
-          // items = items.map(
-          //   (item: { _id: any; name: any; email: any; phone: any }) => {
-          //     return {
-          //       id: item._id,
-          //       name: item.name,
-          //     };
-          //   }
-          // );
-
           res
             .status(200)
             .send(

@@ -6,5 +6,6 @@ export interface INotAvailableTime extends mongoose.Document {
   typeId: string;
   name: string;
   day: string;
-  time: string;
+  stime: string;
+  ltime: string;
 }
