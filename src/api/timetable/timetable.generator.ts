@@ -86,7 +86,7 @@ export async function generateTimetable(workingDay: IWorkingDays, groups: []) {
     } else {
     }
 
-    return { success: false, message: "Success" };
+    return { success: true, message: "Success" };
   } catch (e) {
     console.error(e);
     return { success: false, message: e };

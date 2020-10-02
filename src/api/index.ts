@@ -14,6 +14,7 @@ import buildings from "./buildings/buildings.route";
 import rooms from "./rooms/rooms.route";
 import sessions from "./sessions/session.route";
 import NotAvailable from "./notAvailableTime/notAvailableTime.route";
+import timeslot from "./timeslots/timeslot.route";
 
 const router: Router = Router();
 
@@ -36,5 +37,6 @@ router.use("/buildings", buildings);
 router.use("/rooms", rooms);
 router.use("/sessions", sessions);
 router.use("/NotAvailable", NotAvailable);
+router.use("/timeslot", timeslot);
 
 export default router;
