@@ -30,4 +30,35 @@ export default class TimeslotController {
         res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
       });
   };
+
+  public getTimeslotList = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const collection: any = getCollection();
+
+    try {
+      collection.find({}).toArray((err: any, items: any[]) => {
+        if (err) {
+          console.error("Caught error", err);
+          res
+            .status(500)
+            .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+          res.end();
+        } else {
+          res
+            .status(200)
+            .send(
+              responses.successWithPayload(
+                SuccessCodes.SUCCESSFULLY_DATA_RETRIVED,
+                items
+              )
+            );
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+    }
+  };
 }

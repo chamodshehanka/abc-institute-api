@@ -5,4 +5,5 @@ export interface ITimeslot extends mongoose.Document {
   startTime: string;
   endTime: string;
   day: string;
+  session: string;
 }

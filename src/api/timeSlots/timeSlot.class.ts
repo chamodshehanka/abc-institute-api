@@ -6,6 +6,7 @@ export const TimeslotSchema = new mongoose.Schema({
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
   day: { type: String, required: true },
+  session: { type: String, required: true },
 });
 
 const Timeslot = mongoose.model<ITimeslot>("Timeslot", TimeslotSchema);
