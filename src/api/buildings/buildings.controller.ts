@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Timetable from "./timetable.class";
+import Building from "./buildings.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("timetables");
+  return MongoHelper.client.db("Cluster0").collection("buildings");
 };
 
-export default class TimetableController {
-  public addTimetable = async (req: Request, res: Response): Promise<any> => {
+export default class BuildingController {
+  public addBuilding = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const timetable = new Timetable(requestData);
+    const building = new Building(requestData);
 
     collection
-      .insertOne(timetable)
+      .insertOne(building)
       .then(() => {
         res
           .status(200)
@@ -31,10 +31,7 @@ export default class TimetableController {
       });
   };
 
-  public updateTimetable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public updateBuilding = async (req: Request, res: Response): Promise<any> => {
     const { _id, name } = req.body;
     const collection: any = getCollection();
 
@@ -58,10 +55,7 @@ export default class TimetableController {
       });
   };
 
-  public deleteTimetable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public deleteBuilding = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -76,7 +70,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetableById = async (
+  public getBuildingById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -98,7 +92,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetablesList = async (
+  public getBuildingsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -113,6 +107,15 @@ export default class TimetableController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
+          // items = items.map(
+          //   (item: { _id: any; name: any; email: any; phone: any }) => {
+          //     return {
+          //       id: item._id,
+          //       name: item.name,
+          //     };
+          //   }
+          // );
+
           res
             .status(200)
             .send(

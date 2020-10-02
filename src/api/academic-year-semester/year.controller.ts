@@ -4,21 +4,24 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Timetable from "./timetable.class";
+import yearSemester from "./year.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("timetables");
+  return MongoHelper.client.db("Cluster0").collection("yearSemester");
 };
 
-export default class TimetableController {
-  public addTimetable = async (req: Request, res: Response): Promise<any> => {
+export default class YearController {
+  public addYearSemester = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const timetable = new Timetable(requestData);
+    const yearsemester = new yearSemester(requestData);
 
     collection
-      .insertOne(timetable)
+      .insertOne(yearsemester)
       .then(() => {
         res
           .status(200)
@@ -31,11 +34,11 @@ export default class TimetableController {
       });
   };
 
-  public updateTimetable = async (
+  public updateYearSemester = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    const { _id, name } = req.body;
+    const { _id, year, semester } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -45,7 +48,8 @@ export default class TimetableController {
         },
         {
           $set: {
-            name: name,
+            year: year,
+            semester: semester,
           },
         }
       )
@@ -58,7 +62,7 @@ export default class TimetableController {
       });
   };
 
-  public deleteTimetable = async (
+  public deleteYearSemester = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -76,7 +80,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetableById = async (
+  public getYearSemesterById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -98,7 +102,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetablesList = async (
+  public getYearSemesterList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -113,6 +117,15 @@ export default class TimetableController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
+          // items = items.map(
+          //   (item: { _id: any; name: any; email: any; phone: any }) => {
+          //     return {
+          //       id: item._id,
+          //       name: item.name,
+          //     };
+          //   }
+          // );
+
           res
             .status(200)
             .send(

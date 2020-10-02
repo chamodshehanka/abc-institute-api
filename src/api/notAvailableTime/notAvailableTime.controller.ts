@@ -4,21 +4,24 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Timetable from "./timetable.class";
+import NotAvailableTime from "./notAvailableTime.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("timetables");
+  return MongoHelper.client.db("Cluster0").collection("notAvailableTimes");
 };
 
-export default class TimetableController {
-  public addTimetable = async (req: Request, res: Response): Promise<any> => {
+export default class NotAvailableTimesController {
+  public addNotAvailableController = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const timetable = new Timetable(requestData);
+    const addNotAvailable = new NotAvailableTime(requestData);
 
     collection
-      .insertOne(timetable)
+      .insertOne(addNotAvailable)
       .then(() => {
         res
           .status(200)
@@ -31,11 +34,11 @@ export default class TimetableController {
       });
   };
 
-  public updateTimetable = async (
+  public updateNotAvailable = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    const { _id, name } = req.body;
+    const { _id, day, stime, ltime } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -45,7 +48,9 @@ export default class TimetableController {
         },
         {
           $set: {
-            name: name,
+            day: day,
+            stime: stime,
+            ltime: ltime,
           },
         }
       )
@@ -58,7 +63,7 @@ export default class TimetableController {
       });
   };
 
-  public deleteTimetable = async (
+  public deleteNotAvailable = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -76,7 +81,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetableById = async (
+  public getNotAvailableById = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -98,7 +103,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetablesList = async (
+  public getNotAvailableList = async (
     req: Request,
     res: Response
   ): Promise<any> => {
@@ -113,6 +118,15 @@ export default class TimetableController {
             .send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
           res.end();
         } else {
+          // items = items.map(
+          //   (item: { _id: any; name: any; email: any; phone: any }) => {
+          //     return {
+          //       id: item._id,
+          //       name: item.name,
+          //     };
+          //   }
+          // );
+
           res
             .status(200)
             .send(

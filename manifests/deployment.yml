@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: "chamodcluster-646f"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "chamodcluster-646f"
+    spec:
+      containers:
+        - name: "chamodcluster-646f"
+          image: "registrychamod.azurecr.io/chamodcluster"
+          ports:
+          - containerPort: 4000

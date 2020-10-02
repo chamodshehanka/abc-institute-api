@@ -4,21 +4,21 @@ import * as responses from "../../helpers/responses.handler";
 import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
-import Timetable from "./timetable.class";
+import Session from "./session.class";
 
 const getCollection = () => {
-  return MongoHelper.client.db("Cluster0").collection("timetables");
+  return MongoHelper.client.db("Cluster0").collection("sessions");
 };
 
-export default class TimetableController {
-  public addTimetable = async (req: Request, res: Response): Promise<any> => {
+export default class SessionController {
+  public addSession = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
 
-    const timetable = new Timetable(requestData);
+    const session = new Session(requestData);
 
     collection
-      .insertOne(timetable)
+      .insertOne(session)
       .then(() => {
         res
           .status(200)
@@ -31,11 +31,17 @@ export default class TimetableController {
       });
   };
 
-  public updateTimetable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
-    const { _id, name } = req.body;
+  public updateSession = async (req: Request, res: Response): Promise<any> => {
+    const {
+      _id,
+      lecturers,
+      tags,
+      studentGroup,
+      subject,
+      subjectCode,
+      noOfStudents,
+      duration,
+    } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -45,7 +51,13 @@ export default class TimetableController {
         },
         {
           $set: {
-            name: name,
+            lecturers: lecturers,
+            tags: tags,
+            studentGroup: studentGroup,
+            subject: subject,
+            subjectCode: subjectCode,
+            noOfStudents: noOfStudents,
+            duration: duration,
           },
         }
       )
@@ -58,10 +70,7 @@ export default class TimetableController {
       });
   };
 
-  public deleteTimetable = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public deleteSession = async (req: Request, res: Response): Promise<any> => {
     const id = req.params.id;
     const collection: any = getCollection();
 
@@ -76,10 +85,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetableById = async (
-    req: Request,
-    res: Response
-  ): Promise<any> => {
+  public getSessionById = async (req: Request, res: Response): Promise<any> => {
     const collection: any = getCollection();
 
     collection
@@ -98,7 +104,7 @@ export default class TimetableController {
       });
   };
 
-  public getTimetablesList = async (
+  public getSessionsList = async (
     req: Request,
     res: Response
   ): Promise<any> => {

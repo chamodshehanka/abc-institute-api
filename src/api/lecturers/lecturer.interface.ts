@@ -10,5 +10,4 @@ export interface ILecturer extends mongoose.Document {
   building: string;
   level: number;
   rank: string;
-  room: string;
 }
