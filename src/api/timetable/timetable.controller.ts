@@ -5,12 +5,25 @@ import ErrorCodes from "../../config/error.codes";
 import SuccessCodes from "../../config/success.codes";
 import { MongoHelper } from "../../config/mongodb.config";
 import Timetable from "./timetable.class";
+import { generateTimetable } from "./timetable.generator";
+import workingDays from "../working-days/working.days.route";
 
 const getCollection = () => {
   return MongoHelper.client.db("Cluster0").collection("timetables");
 };
 
 export default class TimetableController {
+  public generateTimetable = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const { workingDay, groups } = req.body;
+
+    const isGenerated = await generateTimetable(workingDay, groups);
+    console.log("is Generated : ", isGenerated);
+    res.send(isGenerated);
+  };
+
   public addTimetable = async (req: Request, res: Response): Promise<any> => {
     const requestData = req.body;
     const collection: any = getCollection();
