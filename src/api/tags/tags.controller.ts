@@ -32,7 +32,7 @@ export default class TagsController {
   };
 
   public updateTags = async (req: Request, res: Response): Promise<any> => {
-    const { _id, name } = req.body;
+    const { _id, name, rooms } = req.body;
     const collection: any = getCollection();
 
     collection
@@ -43,6 +43,7 @@ export default class TagsController {
         {
           $set: {
             name: name,
+            rooms: rooms,
           },
         }
       )

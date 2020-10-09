@@ -18,16 +18,26 @@ export default class SubjectController {
     const subject = new Subject(requestData);
 
     collection
-      .insertOne(subject)
-      .then(() => {
-        res
-          .status(200)
-          .send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_ADDED));
-        res.end();
+      .findOne({
+        subjectCode: requestData.subjectCode,
       })
-      .catch((err: any) => {
-        console.error(err);
-        res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+      .then((subject) => {
+        if (!subject) {
+          collection
+            .insertOne(subject)
+            .then(() => {
+              res
+                .status(200)
+                .send(responses.success(SuccessCodes.SUCCESSFULLY_DATA_ADDED));
+              res.end();
+            })
+            .catch((err: any) => {
+              console.error(err);
+              res.send(responses.failed(ErrorCodes.INTERNAL_ERROR, 400));
+            });
+        } else {
+          res.send(responses.failed(ErrorCodes.ALREADY_EXIST, 400));
+        }
       });
   };
 
