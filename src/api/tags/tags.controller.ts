@@ -43,7 +43,7 @@ export default class TagsController {
         {
           $set: {
             name: name,
-            rooms:rooms
+            rooms: rooms,
           },
         }
       )
