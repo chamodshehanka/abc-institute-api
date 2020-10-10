@@ -21,8 +21,8 @@ export default class SubjectController {
       .findOne({
         subjectCode: requestData.subjectCode,
       })
-      .then((subject) => {
-        if (!subject) {
+      .then((sub) => {
+        if (!sub) {
           collection
             .insertOne(subject)
             .then(() => {
