@@ -18,6 +18,7 @@ import timeslot from "./timeslots/timeslot.route";
 import psessions from "./parallelSession/parallelSession.route";
 import csessions from "./consecutiveSession/consecutiveSession.route";
 import osessions from "./overlapSession/overlapSession.route";
+import subjectsWithTags from "./subjectsWithTags/subjectsWithTags.route";
 
 const router: Router = Router();
 
@@ -44,5 +45,6 @@ router.use("/timeslot", timeslot);
 router.use("/psessions", psessions);
 router.use("/csessions", csessions);
 router.use("/osessions", osessions);
+router.use("/subjectsWithTags", subjectsWithTags);
 
 export default router;
